@@ -1,106 +1,36 @@
-<?php
-	include('util.php');
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  ?>
-  <!-- Styles -->
-  <style>
-  #chartdiv {
-    width: 100%;
-    height: 500px;
-  }
+	<!-- 所有地图数据详情见：https://img.hcharts.cn/mapdata/index.html -->
 
-  </style>
+<link rel="icon" href="https://jscdn.com.cn/highcharts/images/favicon.ico">
+<link href="https://img.hcharts.cn/libs/jquery-ui/themes/base/jquery-ui.css" rel="stylesheet">
+<link href="https://img.hcharts.cn/libs/font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="index.css" rel="stylesheet">
+<script src="https://code.highcharts.com.cn/jquery/jquery-1.8.3.min.js"></script>
+<script src="https://code.highcharts.com.cn/highmaps/highmaps.js"></script>
+<script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+<script src="https://img.hcharts.cn/mapdata/index.js"></script>
+<script src="https://img.hcharts.cn/libs/jquery-ui/jquery-ui.js"></script>
+<script src="https://img.hcharts.cn/static/common/jquery.combobox.js"></script>
+<script src="main.js"></script>
 
-  <!-- Resources -->
-  <script src="https://www.amcharts.com/lib/4/core.js"></script>
-  <script src="https://www.amcharts.com/lib/4/maps.js"></script>
-  <script src="https://www.amcharts.com/lib/4/geodata/worldHigh.js"></script>
-  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+</head>
+<body>
 
-  <!-- Chart code -->
-  <script>
-  am4core.ready(function() {
-
-  // Themes begin
-  am4core.useTheme(am4themes_animated);
-  // Themes end
-
-  /* Create map instance */
-  var chart = am4core.create("chartdiv", am4maps.MapChart);
-
-  /* Set map definition */
-  chart.geodata = am4geodata_worldHigh;
-
-  /* Set projection */
-  chart.projection = new am4maps.projections.Miller();
-
-  /* Create map polygon series */
-  var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-
-  /* Make map load polygon (like country names) data from GeoJSON */
-  polygonSeries.useGeodata = true;
-
-  /* Configure series */
-  var polygonTemplate = polygonSeries.mapPolygons.template;
-  polygonTemplate.applyOnClones = true;
-  polygonTemplate.togglable = true;
-  polygonTemplate.tooltipText = "{name}";
-  polygonTemplate.nonScalingStroke = true;
-  polygonTemplate.strokeOpacity = 0.5;
-  polygonTemplate.fill = chart.colors.getIndex(0);
-  var lastSelected;
-  polygonTemplate.events.on("hit", function(ev) {
-    if (lastSelected) {
-      // This line serves multiple purposes:
-      // 1. Clicking a country twice actually de-activates, the line below
-      //    de-activates it in advance, so the toggle then re-activates, making it
-      //    appear as if it was never de-activated to begin with.
-      // 2. Previously activated countries should be de-activated.
-      lastSelected.isActive = false;
-    }
-    ev.target.series.chart.zoomToMapObject(ev.target);
-    if (lastSelected !== ev.target) {
-      lastSelected = ev.target;
-    }
-  })
-
-
-  /* Create selected and hover states and set alternative fill color */
-  var ss = polygonTemplate.states.create("active");
-  ss.properties.fill = chart.colors.getIndex(2);
-
-  var hs = polygonTemplate.states.create("hover");
-  hs.properties.fill = chart.colors.getIndex(4);
-
-  // Hide Antarctica
-  polygonSeries.exclude = ["AQ"];
-
-  // Small map
-  //chart.smallMap = new am4maps.SmallMap();
-  // Re-position to top right (it defaults to bottom left)
-  //chart.smallMap.align = "right";
-  //chart.smallMap.valign = "top";
-  //chart.smallMap.series.push(polygonSeries);
-
-  // Zoom control
-  chart.zoomControl = new am4maps.ZoomControl();
-  chart.logo.height = -15;
-  var homeButton = new am4core.Button();
-  homeButton.events.on("hit", function(){
-    chart.goHome();
-  });
-
-  homeButton.icon = new am4core.Sprite();
-  homeButton.padding(7, 5, 7, 5);
-  homeButton.width = 30;
-  homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-  homeButton.marginBottom = 10;
-  homeButton.parent = chart.zoomControl;
-  homeButton.insertBefore(chart.zoomControl.plusButton);
-
-  }); // end am4core.ready()
-  </script>
-
-  <!-- HTML -->
-  <h1 style="text-align:center">Worlds CO2 emission data and prediction</h1>
-  <div id="chartdiv"></div>
+<div id="demo-wrapper">
+	<div id="mapBox">
+		<div id="up"></div>
+		<div class="selector">
+			<button id="btn-prev-map" class="prev-next"><i class="fa fa-angle-left"></i></button>
+			<select id="mapDropdown" class="ui-widget combobox"></select>
+			<button id="btn-next-map" class="prev-next"><i class="fa fa-angle-right"></i></button>
+		</div>
+		<div id="container"></div>
+	</div>
+</div>
+</body>
+</html>
