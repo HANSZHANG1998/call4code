@@ -1,26 +1,14 @@
 #demo-wrapper {
-	max-width: 1000px;
 	margin: 0 auto;
 	height: 560px;
 }
 #mapBox {
-	width: 80%;
-	float: left;
+ left: 200px;
 }
 #container {
 	height: 500px;
 }
-#sideBox {
-	float: right;
-	width: 16%;   
-	margin: 100px 1% 0 1%;
-	padding-left: 1%;
-	border-left: 1px solid silver;
-	display: none;
-}
-#infoBox {
-	margin-top: 10px;
-}
+
 .or-view-as {
 	margin: 0.5em 0;
 }
@@ -122,10 +110,6 @@
 		width: auto;
 		height: auto;
 	}
-	#mapBox {
-		width: auto;
-		float: none;
-	}
 	#container {
 		height: 310px;
 	}
@@ -161,5 +145,8 @@ display:none;
 display:none;
 }
 .highcharts-zoom-out{
+display:none;
+}
+.highcharts-credits{
 display:none;
 }
